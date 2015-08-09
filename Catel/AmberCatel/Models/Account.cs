@@ -77,7 +77,6 @@ namespace AmberCatel.Models
         #endregion
 
         #region Methods
-
         /// <summary>
         /// Validates the business rules of this object. Override this method to enable
         ///             validation of business rules.

@@ -1,9 +1,13 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using AmberCatel.Models;
+using AmberCatel.Services;
 using AmberCatel.Services.Interfaces;
 using Catel;
 using Catel.Data;
 using Catel.MVVM;
+using Catel.Windows;
+using Quartz;
 using Task = System.Threading.Tasks.Task;
 
 namespace AmberCatel.ViewModels
@@ -11,10 +15,22 @@ namespace AmberCatel.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private readonly ISerializerService<Account> _accountService;
-        public MainWindowViewModel(ISerializerService<Account> accountService)
+        private readonly ISchedulerService _schedulerService;
+        public MainWindowViewModel(ISerializerService<Account> accountService, ISchedulerService schedulerService)
         {
             Argument.IsNotNull(() => accountService);
             _accountService = accountService;
+            _schedulerService = schedulerService;
+
+            var job = JobBuilder.Create<HelloJob>().WithIdentity(new JobKey("Task_1", "TaskGroup")).Build();
+            var t =
+                TriggerBuilder.Create()
+                    .WithIdentity("Trigger_1", "TaskGroup")
+                    .StartAt(DateBuilder.TodayAt(21, 15, 0))
+                    .EndAt(DateBuilder.TodayAt(21, 18, 0))
+                    .Build();
+            _schedulerService.Scheduler.ScheduleJob(job, t);
+            MessageBox.Show(_schedulerService.Scheduler.IsStarted.ToString());  
         }
 
         public ObservableCollection<Account> Accounts
@@ -23,7 +39,6 @@ namespace AmberCatel.ViewModels
             set { SetValue(AccountsProperty, value); }
         }
         public static readonly PropertyData AccountsProperty = RegisterProperty("Accounts", typeof(ObservableCollection<Account>));
-
         public override string Title => "MainVM";
 
         // TODO: Register models with the vmpropmodel codesnippet
@@ -33,9 +48,10 @@ namespace AmberCatel.ViewModels
 
         protected override async Task Initialize()
         {
-            await base.Initialize();
             Accounts = new ObservableCollection<Account>(_accountService.LoadData());
-            // TODO: subscribe to events here
+            // TODO: subscribe to events here 
+            StyleHelper.CreateStyleForwardersForDefaultStyles();
+            await base.Initialize();
         }
 
         protected override async Task Close()

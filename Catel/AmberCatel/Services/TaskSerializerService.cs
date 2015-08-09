@@ -5,7 +5,7 @@ using AmberCatel.Services.Interfaces;
 
 namespace AmberCatel.Services
 {
-    public class TaskService : ISerializerService<Task>
+    public class TaskSerializerService : ISerializerService<Task>
     {
         public IEnumerable<Task> LoadData()
         {

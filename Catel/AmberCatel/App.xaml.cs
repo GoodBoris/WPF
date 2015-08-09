@@ -5,13 +5,10 @@ using AmberCatel.Services.Interfaces;
 namespace AmberCatel
 {
     using System.Windows;
-
     using Catel.ApiCop;
     using Catel.ApiCop.Listeners;
     using Catel.IoC;
     using Catel.Logging;
-    using Catel.Reflection;
-    using Catel.Windows;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -51,11 +48,9 @@ namespace AmberCatel
             //serviceLocator.RegisterType<IMyInterface, IMyClass>();
             var serviceLocator = ServiceLocator.Default;
             serviceLocator.RegisterType<ISerializerService<Account>, AccountService>();
-            serviceLocator.RegisterType<ISerializerService<Task>, TaskService>();
-            StyleHelper.CreateStyleForwardersForDefaultStyles();
-
+            serviceLocator.RegisterType<ISerializerService<Task>, TaskSerializerService>();
+            serviceLocator.RegisterType<ISchedulerService, TaskSchedulerService>();
             Log.Info("Calling base.OnStartup");
-
             base.OnStartup(e);
         }
 
@@ -64,7 +59,6 @@ namespace AmberCatel
             // Get advisory report in console
             ApiCopManager.AddListener(new ConsoleApiCopListener());
             ApiCopManager.WriteResults();
-
             base.OnExit(e);
         }
     }

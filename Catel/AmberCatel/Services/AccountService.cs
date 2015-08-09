@@ -11,7 +11,6 @@ namespace AmberCatel.Services
     public class AccountService : ISerializerService<Account>
     {
         private readonly string _path;
-
         public AccountService()
         {
             var directory = Path.GetApplicationDataDirectory();
