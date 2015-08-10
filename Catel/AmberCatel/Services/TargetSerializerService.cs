@@ -5,14 +5,14 @@ using AmberCatel.Services.Interfaces;
 
 namespace AmberCatel.Services
 {
-    public class TaskSerializerService : ISerializerService<Task>
+    public class TargetSerializerService : ISerializerService<Target>
     {
-        public IEnumerable<Task> LoadData()
+        public IEnumerable<Target> LoadData()
         {
             throw new NotImplementedException();
         }
 
-        public void SaveData(IEnumerable<Task> data)
+        public void SaveData(IEnumerable<Target> data)
         {
             throw new NotImplementedException();
         }

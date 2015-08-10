@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Catel.Data;
+using Quartz.Plugin.Xml;
 
 namespace AmberCatel.Models
 {
@@ -14,5 +15,16 @@ namespace AmberCatel.Models
 
         public static readonly PropertyData AccountsProperty =
             RegisterProperty("Accounts", typeof(ObservableCollection<Account>), () => new ObservableCollection<Account>());
+
+        #region Targets property
+        public ObservableCollection<Target> Targets
+        {
+            get { return GetValue<ObservableCollection<Target>>(TargetsProperty); }
+            set { SetValue(TargetsProperty, value); }
+        }
+        public static readonly PropertyData TargetsProperty = 
+            RegisterProperty("Targets", typeof (ObservableCollection<Target>), () => new ObservableCollection<Target>());
+        #endregion
     }
+
 }

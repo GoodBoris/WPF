@@ -93,20 +93,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CallHandlerSample.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\Settings.cs" />
-    <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\Target.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\Interfaces\ISchedulerService.cs" />
     <Compile Include="Services\Interfaces\ISerializerService.cs" />
-    <Compile Include="Services\TaskSchedulerService.cs" />
-    <Compile Include="Services\TaskSerializerService.cs" />
-    <Compile Include="TestCall.cs" />
+    <Compile Include="Services\TargetSchedulerService.cs" />
+    <Compile Include="Services\TargetSerializerService.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\TaskViewModel.cs" />
+    <Compile Include="ViewModels\TargetViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

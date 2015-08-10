@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using Catel.Data;
 
 namespace AmberCatel.Models
@@ -12,32 +14,22 @@ namespace AmberCatel.Models
 #if !SILVERLIGHT
     [Serializable]
 #endif
-    public class Task : ModelBase
+    public class Target : ModelBase
     {
 
         #region Fields
 
         public struct Period
         {
-            private int _startTime, _endTime;
-
             public Period(int startTime, int endTime)
             {
-                _startTime = startTime;
-                _endTime = endTime;
+                StartTime = startTime;
+                EndTime = endTime;
             }
 
-            public int StartTime
-            {
-                get { return _startTime; }
-                set { _startTime = value; }
-            }
+            public int StartTime { get; set; }
 
-            public int EndTime
-            {
-                get { return _endTime; }
-                set { _endTime = value; }
-            }
+            public int EndTime { get; set; }
         }
 
         #endregion
@@ -47,7 +39,7 @@ namespace AmberCatel.Models
         /// <summary>
         /// Initializes a new object from scratch.
         /// </summary>
-        public Task()
+        public Target()
         {
 
         }
@@ -58,7 +50,7 @@ namespace AmberCatel.Models
         /// </summary>
         /// <param name="info"><see cref="SerializationInfo"/> that contains the information.</param>
         /// <param name="context"><see cref="StreamingContext"/>.</param>
-        protected Task(SerializationInfo info, StreamingContext context)
+        protected Target(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -82,7 +74,7 @@ namespace AmberCatel.Models
             get { return GetValue<string>(TextToSpeachProperty); }
             set { SetValue(TextToSpeachProperty, value); }
         }
-        public static readonly PropertyData TextToSpeachProperty = RegisterProperty("TextToSpeach", typeof(string), "Big hello! How are you?");
+        public static readonly PropertyData TextToSpeachProperty = RegisterProperty("TextToSpeach", typeof(string), ()=> "Big hello! How are you?");
 
         public Period Time
         {
@@ -90,6 +82,14 @@ namespace AmberCatel.Models
             set { SetValue(TimeProperty, value); }
         }
         public static readonly PropertyData TimeProperty = RegisterProperty("Time", typeof(Period), () => new Period(24, 23));
+
+        public ObservableCollection<Target> Targets
+        {
+            get { return GetValue<ObservableCollection<Target>>(TargetsProperty); }
+            set { SetValue(TargetsProperty, value); }
+        }
+        public static readonly PropertyData TargetsProperty =
+            RegisterProperty("Targets", typeof(ObservableCollection<Target>), () => new ObservableCollection<Target>());
 
         #endregion
 
@@ -105,13 +105,20 @@ namespace AmberCatel.Models
             base.ValidateBusinessRules(validationResults);
         }
 
-        /// <summary>
-        /// Validates the field values of this object. Override this method to enable
-        ///             validation of field values.
-        /// </summary>
-        /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
+            if (((Time.StartTime & Time.EndTime) > 24) | ((Time.StartTime & Time.EndTime) < 1))
+                validationResults.Add(FieldValidationResult.CreateError(TimeProperty, "Время задано неправильно!"));
+
+            if (string.IsNullOrWhiteSpace(Number))
+                validationResults.Add(FieldValidationResult.CreateError(NumberProperty, "Необходимо ввести номер абонента"));
+
+            const string patternNumber = @"(^\+\d{1,2})?((\(\d{3}\))|(\-?\d{3}\-)|(\d{3}))((\d{3}\-\d{4})| 
+                                    (\d{3}\-\d\d\20.-\d\d)|(\d{7})|(\d{3}\-\d\-\d{3}))";
+
+            if (!Regex.IsMatch(Number, patternNumber))
+                validationResults.Add(FieldValidationResult.CreateError(NumberProperty, "Неправильно задан номер"));
+
             base.ValidateFields(validationResults);
         }
 

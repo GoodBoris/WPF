@@ -94,6 +94,15 @@ namespace AmberCatel.Models
         /// <param name="validationResults">The validation results, add additional results to this list.</param>
         protected override void ValidateFields(List<IFieldValidationResult> validationResults)
         {
+            if (string.IsNullOrWhiteSpace(Server))
+                validationResults.Add(FieldValidationResult.CreateError(ServerProperty, "Необходимо ввести сервер подключения"));
+
+            if (string.IsNullOrWhiteSpace(Login))
+                validationResults.Add(FieldValidationResult.CreateError(LoginProperty, "Необходимо указать логин"));
+
+            if (string.IsNullOrWhiteSpace(Password))
+                validationResults.Add(FieldValidationResult.CreateError(PasswordProperty, "Введите пожалуйста пароль"));
+
             base.ValidateFields(validationResults);
         }
 

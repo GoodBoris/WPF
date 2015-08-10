@@ -48,8 +48,8 @@ namespace AmberCatel
             //serviceLocator.RegisterType<IMyInterface, IMyClass>();
             var serviceLocator = ServiceLocator.Default;
             serviceLocator.RegisterType<ISerializerService<Account>, AccountService>();
-            serviceLocator.RegisterType<ISerializerService<Task>, TaskSerializerService>();
-            serviceLocator.RegisterType<ISchedulerService, TaskSchedulerService>();
+            serviceLocator.RegisterType<ISerializerService<Target>, TargetSerializerService>();
+            serviceLocator.RegisterType<ISchedulerService, TargetSchedulerService>();
             Log.Info("Calling base.OnStartup");
             base.OnStartup(e);
         }

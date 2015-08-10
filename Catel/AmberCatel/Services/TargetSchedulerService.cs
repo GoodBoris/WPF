@@ -8,14 +8,14 @@ using ISchedulerService = AmberCatel.Services.Interfaces.ISchedulerService;
 
 namespace AmberCatel.Services
 {
-    public class TaskSchedulerService : ISchedulerService
+    public class TargetSchedulerService : ISchedulerService
     {
         private IScheduler _scheduler = new StdSchedulerFactory(
             new NameValueCollection { { "quartz.threadPool.threadCount", "50" },
                 { "quartz.scheduler.instanceName", "ScheduleExecutorService" } })
             .GetScheduler();
 
-        public TaskSchedulerService()
+        public TargetSchedulerService()
         {
             _scheduler.ListenerManager.AddJobListener(new RepeatAfterCompletionJobListener(), GroupMatcher<JobKey>.GroupEquals("TaskGroup"));
             _scheduler.Start();
